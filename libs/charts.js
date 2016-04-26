@@ -7,11 +7,14 @@ function drawColumnChart(data, labels, target, container, layout){
     var width = container.width(),
         height = container.height();
 
-
+    if(layout["ttl-columnchart-props"].displayLegend){
+        drawColumnLegend(data, labels, colors, container, layout);
+        var legendWidth = $('.legend', container).width();
+    }
     var containerSelection = d3.select(container[0]);
 
     var chart = containerSelection.append("svg")
-        .attr("width", width)
+        .attr("width", width - legendWidth)
         .attr("height", height)
         .html("")
         .attr("class", target);
@@ -47,5 +50,7 @@ function drawColumnChart(data, labels, target, container, layout){
                 return colors[i];
             });
     }
-    drawColumnLegend(data, labels, colors, container, layout);
+    if(layout["ttl-columnchart-props"].displayLegend && layout["ttl-columnchart-props"].legendPosition === 'w'){
+        chart.style("transform", "translateX(" + legendWidth + "px)");
+    }
 }

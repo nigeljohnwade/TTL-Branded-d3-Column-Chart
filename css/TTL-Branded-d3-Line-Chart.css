@@ -1,0 +1,20 @@
+div.legend{
+    position: absolute;
+}
+div.legend ul{
+    list-style-type: none;
+}
+div.legend.e{
+    right: 0;
+    top: 0;
+}
+div.legend.w{
+    left: 0;
+    top: 0;
+}
+li.legend-item span.legend-indicator{
+    width: 24px;
+    height:24px;
+    display: inline-block;
+    vertical-align: middle;
+}

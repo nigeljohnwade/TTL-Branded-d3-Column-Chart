@@ -43,10 +43,10 @@ define( [
                     });
                     _data.push(_tmp);
                 }
-                for (var i = 0 ; i < this.table.rows[0].dimensions.length ; i++ ){
-                    _labels.push(this.table.rows[0].dimensions[i].parent.headers[i].qFallbackTitle);
+                for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
+                    _labels.push(this.table.rows[0].measures[i].qMeasureInfo.qFallbackTitle);
                 }                      
-            drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
+                drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
             },
         };
     } );
