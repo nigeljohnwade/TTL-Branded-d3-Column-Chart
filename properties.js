@@ -39,9 +39,17 @@ define( [], function () {
                 label: "West"
             }],
     };    
+    var multiSeriesGap = {
+        ref: "ttl-columnchart-props.multiSeriesGap",
+        component: "slider",
+        label: "% Gap between measures",
+        type: "number",
+        min: 0,
+        max: 100
+    }
     var customSection = {
         component: "expandable-items",
-        label: "Labels",
+        label: "Labels & Legend",
         items: {
             chartTile: chartTitle,
             captionText: captionText,
@@ -49,6 +57,13 @@ define( [], function () {
             legendPosition: legendPosition
         }
     };
+    var appearanceSection = {
+            component: "expandable-items",
+            label: "Appearance",
+            items:{
+                multiSeriesGap: multiSeriesGap
+            }
+    }
     return {
         type: "items",
         component: "accordion",
@@ -56,7 +71,8 @@ define( [], function () {
             dimensions: dimensions,
             measures: measures,
             sorting: sorting,
-            customSection: customSection
+            customSection: customSection,
+            appearanceSection: appearanceSection
         }
     };
 })
