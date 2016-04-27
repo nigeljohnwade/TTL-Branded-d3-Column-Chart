@@ -16,7 +16,9 @@ define([
                 height = container.height(),
                 legendWidth = 0,
                 chartTitleHeight = 0,
-                captionTextHeight = 0;
+                captionTextHeight = 0
+                topPadding = 20,
+                bottomPadding = 20;
 
             if(layout["ttl-columnchart-props"].displayLegend){
                 legend.drawLegend(data, labels, colors, container, layout);
@@ -55,9 +57,9 @@ define([
             }
         
             var gap = props.multiSeriesGap;
-            
+            var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding;
             var y = d3.scale.linear()
-                .range([height - chartTitleHeight, 0]);
+                .range([plotHeight, 0]);
             
             var _dataCollate = {max:[], length:[]};
             $.each(data, function(idx, elem){
@@ -79,10 +81,10 @@ define([
                     
                 bar[i].append("rect")
                     .attr("y", function(d) { 
-                        return y(d) + chartTitleHeight + captionTextHeight; 
+                        return y(d) + chartTitleHeight + captionTextHeight + topPadding; 
                         })
                     .attr("height", function(d) {
-                        return height - y(d); 
+                        return plotHeight - y(d); 
                         })
                     .attr("width", barWidth * (100 - gap)/100)
                     .attr("fill", function(d, idx){
@@ -90,7 +92,7 @@ define([
                     });
                     
                 bar[i].append("title")
-                    .text(function(d, i){
+                    .text(function(d, idx){
                         return d;
                     });
             }
