@@ -63,28 +63,30 @@ define([
             
             var _dataCollate = {max:[], length:[]};
             $.each(data, function(idx, elem){
-                _dataCollate.max.push(d3.max(d3.values(elem)));
-                _dataCollate.length.push(d3.keys(elem).length)
+                _dataCollate.max.push(d3.max(d3.values(elem)).value);
+                _dataCollate.length.push(elem.length)
             });
             y.domain([0, d3.max(_dataCollate.max)]);
             var barWidth = (width / d3.max(_dataCollate.length))/data.length;
             var seriesWidth = width / d3.max(_dataCollate.length);
-            for(var i = 0 ; i < d3.max(_dataCollate.length) ; i++){             
+            console.log(d3.max(_dataCollate.length));
+            for(var i = 0 ; i < data.length ; i++){             
                 
                 var bar = [];
                 bar[i] = chart.selectAll(".series")
-                    .data(d3.values(data[i]))
-                    .enter().append("g")
+                    .data(data[i])
+                    .enter()
+                    .append("g")
                     .attr("transform", function(d, idx) {
                         return "translate(" + ((idx * seriesWidth) + (barWidth * ((100 - gap)/100) * i)) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
                     .attr("y", function(d) { 
-                        return y(d) + chartTitleHeight + captionTextHeight + topPadding; 
+                        return y(d.value) + chartTitleHeight + captionTextHeight + topPadding; 
                         })
                     .attr("height", function(d) {
-                        return plotHeight - y(d); 
+                        return plotHeight - y(d.value); 
                         })
                     .attr("width", barWidth * (100 - gap)/100)
                     .attr("fill", function(d, idx){
@@ -93,7 +95,7 @@ define([
                     
                 bar[i].append("title")
                     .text(function(d, idx){
-                        return d;
+                        return [d.name, ": ", d.value, "(", labels[i], ")"].join('');
                     });
             }
             if(props.displayLegend && props.legendPosition === 'w'){

@@ -38,7 +38,7 @@ define( [
                 for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
                     _data.push([]);
                     for(var j = 0 ; j < this.table.rows.length ; j++ ){
-                        _data[i][this.table.rows[j].dimensions[i].qText] = this.table.rows[j].measures[i].qNum;
+                        _data[i].push({name: this.table.rows[j].dimensions[i].qText, value: this.table.rows[j].measures[i].qNum});
                     }
                 }
                 console.log(_data);
