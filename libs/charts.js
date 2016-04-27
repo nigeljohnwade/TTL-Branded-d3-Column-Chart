@@ -5,12 +5,14 @@ function drawColumnChart(data, labels, target, container, layout){
         '#a6cee3','#b2df8a','#fb9a99','#fdbf6f','#cab2d6','#ffff99'
     ];  
     var width = container.width(),
-        height = container.height();
+        height = container.height(),
+        legendWidth = 0;
 
     if(layout["ttl-columnchart-props"].displayLegend){
         drawColumnLegend(data, labels, colors, container, layout);
-        var legendWidth = $('.legend', container).width();
+        legendWidth = $('.legend', container).width();
     }
+    
     var containerSelection = d3.select(container[0]);
 
     var chart = containerSelection.append("svg")
