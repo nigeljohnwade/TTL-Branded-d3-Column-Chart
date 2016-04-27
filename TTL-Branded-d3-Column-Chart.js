@@ -36,11 +36,11 @@ define( [
                 $element.empty();
                 var _data = [], _labels = [];
                 for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
-                    var _tmp = this.table.rows.map(function(elem){
-                        return elem.measures[i].qNum;
-                    });
-                    _data.push(_tmp);
+                    _data.push([]);
+                    for(var j = 0 ; j < this.table.rows.length ; j++ ){
+                    }
                 }
+                console.log(_data);
                 for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
                     _labels.push(this.table.rows[0].measures[i].qMeasureInfo.qFallbackTitle);
                 }                      
