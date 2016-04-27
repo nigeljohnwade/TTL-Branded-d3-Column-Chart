@@ -1,7 +1,9 @@
 define( [], function () {
     'use strict';
     var dimensions = {
-        uses: "dimensions"
+        uses: "dimensions",
+        min: 1,
+        max: 1
     };
     var measures = {
         uses: "measures"
