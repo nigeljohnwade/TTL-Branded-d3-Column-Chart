@@ -40,11 +40,8 @@ define( [
                     for(var j = 0 ; j < this.table.rows.length ; j++ ){
                         _data[i].push({name: this.table.rows[j].dimensions[0].qText, value: this.table.rows[j].measures[i].qNum});
                     }
-                }
-                console.log(_data);
-                for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
                     _labels.push(this.table.rows[0].measures[i].qMeasureInfo.qFallbackTitle);
-                }                      
+                }
                 charts.drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
             },
         };
