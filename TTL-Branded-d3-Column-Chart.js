@@ -2,7 +2,6 @@ define( [
     "css!./css/TTL-Branded-d3-Line-Chart.css",
     "./libs/d3.min",
     "./libs/charts",
-    "./libs/legend",
     "./properties",
     "qlik"
     ],
@@ -10,7 +9,6 @@ define( [
         cssContent,
         d3,
         charts,
-        legend,
         props,
         qlik
         ) {
@@ -46,7 +44,7 @@ define( [
                 for (var i = 0 ; i < this.table.rows[0].measures.length ; i++ ){
                     _labels.push(this.table.rows[0].measures[i].qMeasureInfo.qFallbackTitle);
                 }                      
-                drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
+                charts.drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
             },
         };
     } );
