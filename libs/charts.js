@@ -40,6 +40,7 @@ define([
             });
             y.domain([0, d3.max(_dataCollate.max)]);
             var barWidth = (width / d3.max(_dataCollate.length))/data.length;
+            var seriesWidth = width / d3.max(_dataCollate.length);
             for(var i = 0 ; i < data.length ; i++){             
                 
                 var bar = [];
