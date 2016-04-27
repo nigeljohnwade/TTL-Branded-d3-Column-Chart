@@ -63,7 +63,7 @@ define([
             
             var _dataCollate = {max:[], length:[]};
             $.each(data, function(idx, elem){
-                _dataCollate.max.push(d3.max(d3.values(elem)).value);
+                _dataCollate.max.push(d3.max(elem.map(function(elem2){ return elem2.value})));
                 _dataCollate.length.push(elem.length)
             });
             y.domain([0, d3.max(_dataCollate.max)]);
