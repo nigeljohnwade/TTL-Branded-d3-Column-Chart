@@ -62,6 +62,11 @@ define([
                     .attr("fill", function(d, idx){
                         return colors[i];
                     });
+                    
+                bar[i].append("title")
+                    .text(function(d, i){
+                        return d;
+                    });
             }
             if(layout["ttl-columnchart-props"].displayLegend && layout["ttl-columnchart-props"].legendPosition === 'w'){
                 chart.style("transform", "translateX(" + legendWidth + "px)");
