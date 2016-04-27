@@ -16,11 +16,11 @@ define([
                 height = container.height(),
                 legendWidth = 0,
                 chartTitleHeight = 0,
-                captionTextHeight = 0
+                captionTextHeight = 0,
                 topPadding = 20,
                 bottomPadding = 20;
 
-            if(layout["ttl-columnchart-props"].displayLegend){
+            if(props.displayLegend){
                 legend.drawLegend(data, labels, colors, container, layout);
                 legendWidth = $('.legend', container).width();
             }
