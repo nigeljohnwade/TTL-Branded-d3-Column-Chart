@@ -6,6 +6,7 @@ define([
     ){  
     return{
         drawColumnChart: function(data, labels, target, container, layout){
+            var props = layout["ttl-columnchart-props"];
             var colors = [
                 '#1f78b4','#33a02c','#e31a1c','#ff7f00','#6a3d9a','#b15928',
                 '#62a3d0','#72bf5b','#ef5a5a','#fe9f37','#9a77b8','#d8ac60',
@@ -13,7 +14,9 @@ define([
             ];  
             var width = container.width(),
                 height = container.height(),
-                legendWidth = 0;
+                legendWidth = 0,
+                chartTitleHeight = 0,
+                captionTextHeight = 0;
 
             if(layout["ttl-columnchart-props"].displayLegend){
                 legend.drawLegend(data, labels, colors, container, layout);
@@ -28,10 +31,33 @@ define([
                 .html("")
                 .attr("class", target);
             
-            var gap = layout["ttl-columnchart-props"].multiSeriesGap;
+            if(props.chartTitle && props.chartTitle.length > 0){
+                var chartTitle = chart.append("text")
+                    .classed("chart-title", true)
+                    .text(function(d, i){
+                        return props.chartTitle
+                    })
+                    .attr("y", function(d, i){
+                        return this.offsetHeight;
+                    });
+                chartTitleHeight = chartTitle[0][0].offsetHeight;
+            }
+            if(props.captionText && props.captionText.length > 0){
+                var captionText = chart.append("text")
+                    .classed("caption-text", true)
+                    .text(function(d, i){
+                        return props.captionText;
+                    })
+                    .attr("y", function(d, i){
+                        return this.offsetHeight + chartTitleHeight;
+                    });
+                captionTextHeight = captionText[0][0].offsetHeight;
+            }
+        
+            var gap = props.multiSeriesGap;
             
             var y = d3.scale.linear()
-                .range([height, 0]);
+                .range([height - chartTitleHeight, 0]);
             
             var _dataCollate = {max:[], length:[]};
             $.each(data, function(idx, elem){
@@ -53,7 +79,7 @@ define([
                     
                 bar[i].append("rect")
                     .attr("y", function(d) { 
-                        return y(d); 
+                        return y(d) + chartTitleHeight + captionTextHeight; 
                         })
                     .attr("height", function(d) {
                         return height - y(d); 
@@ -68,7 +94,7 @@ define([
                         return d;
                     });
             }
-            if(layout["ttl-columnchart-props"].displayLegend && layout["ttl-columnchart-props"].legendPosition === 'w'){
+            if(props.displayLegend && props.legendPosition === 'w'){
                 chart.style("transform", "translateX(" + legendWidth + "px)");
             }
         }

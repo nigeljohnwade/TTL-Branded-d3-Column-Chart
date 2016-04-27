@@ -18,3 +18,11 @@ li.legend-item span.legend-indicator{
     display: inline-block;
     vertical-align: middle;
 }
+svg text.chart-title{
+    color: black;
+    font-size: 24px;
+}
+svg text.caption-text{
+    color: black;
+    font-size: 12px;
+}
