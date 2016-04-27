@@ -30,14 +30,17 @@ define([
             
             var gap = layout["ttl-columnchart-props"].multiSeriesGap;
             
-            for(var i = 0 ; i < data.length ; i++){
-                var y = d3.scale.linear()
-                    .range([height, 0]);
-                y.domain([0, d3.max(data[i])]);
-                
-                var barWidth = (width / data[i].length)/data.length;
-                var seriesWidth = width / data[i].length;
-                
+            var y = d3.scale.linear()
+                .range([height, 0]);
+            
+            var _dataCollate = {max:[], length:[]};
+            $.each(data, function(idx, elem){
+                _dataCollate.max.push(d3.max(elem));
+                _dataCollate.length.push(elem.length)
+            });
+            y.domain([0, d3.max(_dataCollate.max)]);
+            var barWidth = (width / d3.max(_dataCollate.length))/data.length;
+            for(var i = 0 ; i < data.length ; i++){             
                 
                 var bar = [];
                 bar[i] = chart.selectAll(".series")
