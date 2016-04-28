@@ -57,7 +57,9 @@ define([
             }
         
             var gap = props.multiSeriesGap;
+            
             var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding;
+            
             var y = d3.scale.linear()
                 .range([plotHeight, 0]);
             
@@ -66,10 +68,12 @@ define([
                 _dataCollate.max.push(d3.max(elem.map(function(elem2){ return elem2.value})));
                 _dataCollate.length.push(elem.length)
             });
+            
             y.domain([0, d3.max(_dataCollate.max)]);
+            
             var barWidth = (width / d3.max(_dataCollate.length))/data.length;
             var seriesWidth = width / d3.max(_dataCollate.length);
-            console.log(d3.max(_dataCollate.length));
+            
             for(var i = 0 ; i < data.length ; i++){             
                 
                 var bar = [];
