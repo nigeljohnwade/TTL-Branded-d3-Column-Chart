@@ -68,9 +68,10 @@ define([
         
             var gap = props.multiSeriesGap;
             
-            var x = d3.scale.linear()
-                .range([0, width - legendWidth - leftPadding - rightPadding]);
-            x.domain([0, d3.max(_dataCollate.length)]);
+            var xDomain = data[0].map(function(elem){return elem.name})
+            var x = d3.scale.ordinal()
+                .rangeRoundBands([0, width - legendWidth - leftPadding - rightPadding]);
+            x.domain(xDomain);
             var x_axis = d3.svg.axis().scale(x);
             var axis_x = d3.select("svg")
                 .append("g")
@@ -91,9 +92,9 @@ define([
             yAxisWidth = axis_y[0][0].getBBox().width; 
             axis_x.remove();            
             
-            x = d3.scale.linear()
-                .range([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding]);
-            x.domain([0, d3.max(_dataCollate.length)]);
+            x = d3.scale.ordinal()
+                .rangeRoundBands([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding]);
+            x.domain(xDomain);
             x_axis = d3.svg.axis().scale(x);
             axis_x = d3.select("svg")
                 .append("g")
@@ -116,7 +117,8 @@ define([
                     .enter()
                     .append("g")
                     .attr("transform", function(d, idx) {
-                        return "translate(" + ((yAxisWidth + leftPadding) + (x(idx) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
+                        console.log(x(d.name));
+                        return "translate(" + ((yAxisWidth + leftPadding) + (x(d.name) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
