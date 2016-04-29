@@ -86,6 +86,19 @@ define([
                     });
                     
                 bar[i].append("rect")
+                    .classed("column", true)
+                    .attr("data-qelemnumber", function(d, idx){
+                        return layout.qHyperCube.qDataPages[0].qMatrix[idx][0].qElemNumber;
+                    })
+                    .attr("data-name", function(d){
+                        return d.name;
+                    })
+                    .attr("data-value", function(d){
+                        return d.value;
+                    })                 
+                    .attr("data-series", function(d){
+                        return labels[i];
+                    })       
                     .attr("y", function(d) { 
                         return y(d.value) + chartTitleHeight + captionTextHeight + topPadding; 
                         })
@@ -99,7 +112,7 @@ define([
                     
                 bar[i].append("title")
                     .text(function(d, idx){
-                        return [d.name, ": ", d.value, "(", labels[i], ")"].join('');
+                        return [d.name, ": ", d.value, " (", labels[i], ")"].join('');
                     });
             }
             if(props.displayLegend && props.legendPosition === 'w'){

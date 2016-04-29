@@ -29,7 +29,7 @@ define( [
                 }
             },
             paint: function ( $element, layout ) {
-                var hc = layout.qHyperCube;
+                var hc = layout.qHyperCube, self = this;
                 if ( !this.table ) {
                     this.table = qlik.table( this );
                 }
@@ -43,6 +43,13 @@ define( [
                     _labels.push(this.table.rows[0].measures[i].qMeasureInfo.qFallbackTitle);
                 }
                 charts.drawColumnChart(_data, _labels, 'd3-column-chart', $element, layout);
+                $element.find('rect.column').on('qv-activate', function(e) {
+                console.log(e);
+                    if(this.hasAttribute("data-value")) {
+                        var value = parseInt(this.getAttribute("data-qelemnumber"), 10), dim = 0;
+                        self.selectValues(dim, [value], true);
+                    }
+                });
             },
         };
     } );
