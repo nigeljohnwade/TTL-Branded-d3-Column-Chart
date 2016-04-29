@@ -71,7 +71,7 @@ define([
                 .rangeRoundBands([0, width - legendWidth - leftPadding - rightPadding], 0, 0);
             x.domain(xDomain);
             var x_axis = d3.svg.axis().scale(x);
-            var axis_x = d3.select("svg")
+            var axis_x = containerSelection.select("svg")
                 .append("g")
                 .attr("class", "x axis")
                 .call(x_axis)
@@ -82,7 +82,7 @@ define([
                     .attr("transform", function(d) {
                         return "rotate(-" + props.xAxisTickLabelRotation + ")" 
                 });;
-            xAxisHeight = d3.select('g.x.axis')[0][0].getBBox().height; 
+            xAxisHeight = containerSelection.select('g.x.axis')[0][0].getBBox().height; 
             
             var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding - xAxisHeight;
             
@@ -90,18 +90,18 @@ define([
                 .range([plotHeight, 0]);
             y.domain([0, d3.max(_dataCollate.max)]);
             var y_axis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format("s"));
-            var axis_y = d3.select("svg")
+            var axis_y = containerSelection.select("svg")
                 .append("g")
                 .attr("class", "y axis")
                 .call(y_axis);
             yAxisWidth = axis_y[0][0].getBBox().width; 
-            d3.select('g.x.axis').remove();            
+            containerSelection.select('g.x.axis').remove();            
             
             x = d3.scale.ordinal()
                 .rangeRoundBands([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding], 0, 0);
             x.domain(xDomain);
             x_axis = d3.svg.axis().scale(x);
-            axis_x = d3.select("svg")
+            axis_x = containerSelection.select("svg")
                 .append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(" + yAxisWidth + leftPadding + "," + (height - bottomPadding - xAxisHeight) + ")")
