@@ -116,7 +116,7 @@ define([
                     .enter()
                     .append("g")
                     .attr("transform", function(d, idx) {
-                        return "translate(" + ((yAxisWidth + leftPadding) + ((idx * seriesWidth) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
+                        return "translate(" + ((yAxisWidth + leftPadding) + (x(idx) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
