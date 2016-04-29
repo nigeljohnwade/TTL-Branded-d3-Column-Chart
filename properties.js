@@ -49,6 +49,14 @@ define( [], function () {
         min: 0,
         max: 100
     }
+    var xAxisTickLabelRotation = {
+        ref: "ttl-columnchart-props.xAxisTickLabelRotation",
+        component: "slider",
+        label: "X Axis Tick Label Rotation (°)",
+        type: "number",
+        min: 0,
+        max: 90
+    };
     var customSection = {
         component: "expandable-items",
         label: "Labels & Legend",
@@ -63,7 +71,8 @@ define( [], function () {
             component: "expandable-items",
             label: "Appearance",
             items:{
-                multiSeriesGap: multiSeriesGap
+                multiSeriesGap: multiSeriesGap,
+                xAxisTickLabelRotation: xAxisTickLabelRotation
             }
     }
     return {

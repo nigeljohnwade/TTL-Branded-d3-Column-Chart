@@ -65,8 +65,6 @@ define([
                     });
                 captionTextHeight = captionText[0][0].offsetHeight;
             }
-        
-            var gap = props.multiSeriesGap;
             
             var xDomain = data[0].map(function(elem){return elem.name})
             var x = d3.scale.ordinal()
@@ -76,8 +74,15 @@ define([
             var axis_x = d3.select("svg")
                 .append("g")
                 .attr("class", "x axis")
-                .call(x_axis);
-            xAxisHeight = axis_x[0][0].getBBox().height; 
+                .call(x_axis)
+                .selectAll("text")	
+                    .style("text-anchor", "end")
+                    .attr("dx", "-.8em")
+                    .attr("dy", ".15em")
+                    .attr("transform", function(d) {
+                        return "rotate(-" + props.xAxisTickLabelRotation + ")" 
+                });;
+            xAxisHeight = d3.select('g.x.axis')[0][0].getBBox().height; 
             
             var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding - xAxisHeight;
             
@@ -90,7 +95,7 @@ define([
                 .attr("class", "y axis")
                 .call(y_axis);
             yAxisWidth = axis_y[0][0].getBBox().width; 
-            axis_x.remove();            
+            d3.select('g.x.axis').remove();            
             
             x = d3.scale.ordinal()
                 .rangeRoundBands([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding], 0, 0);
@@ -99,15 +104,23 @@ define([
             axis_x = d3.select("svg")
                 .append("g")
                 .attr("class", "x axis")
-                .call(x_axis);
+                .attr("transform", "translate(" + yAxisWidth + leftPadding + "," + (height - bottomPadding - xAxisHeight) + ")")
+                .call(x_axis)
+                .selectAll("text")	
+                    .style("text-anchor", "end")
+                    .attr("dx", "-.8em")
+                    .attr("dy", ".15em")
+                    .attr("transform", function(d) {
+                        return "rotate(-" + props.xAxisTickLabelRotation + ")" 
+                });
                 
-            axis_x.attr("transform", "translate(" + yAxisWidth + leftPadding + "," + (height - bottomPadding - xAxisHeight) + ")");
             axis_y.attr("transform", "translate(" + yAxisWidth + leftPadding + ", "  + (chartTitleHeight + captionTextHeight + topPadding) + ")");
             
             var plotWidth = width - yAxisWidth - leftPadding - rightPadding;
             
             var barWidth = x.rangeBand()/data.length;
             var seriesWidth = x.rangeBand();
+            var gap = props.multiSeriesGap * 0.01 * barWidth;
             
             for(var i = 0 ; i < data.length ; i++){             
                 
@@ -117,8 +130,7 @@ define([
                     .enter()
                     .append("g")
                     .attr("transform", function(d, idx) {
-                        console.log(x(d.name));
-                        return "translate(" + ((yAxisWidth + leftPadding) + (x(d.name) + (barWidth * i) + (barWidth * (gap/100) * 0.5))) + ",0)"; 
+                        return "translate(" + ((yAxisWidth + leftPadding) + (x(d.name) + ((barWidth - gap) * i)) + gap) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
@@ -141,7 +153,7 @@ define([
                     .attr("height", function(d) {
                         return plotHeight - y(d.value); 
                         })
-                    .attr("width", barWidth * (100 - gap)/100)
+                    .attr("width", barWidth - gap)
                     .attr("fill", function(d, idx){
                         return colors[i];
                     });
