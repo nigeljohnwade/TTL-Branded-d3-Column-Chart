@@ -70,7 +70,7 @@ define([
             
             var xDomain = data[0].map(function(elem){return elem.name})
             var x = d3.scale.ordinal()
-                .rangeRoundBands([0, width - legendWidth - leftPadding - rightPadding]);
+                .rangeRoundBands([0, width - legendWidth - leftPadding - rightPadding], 0, 0);
             x.domain(xDomain);
             var x_axis = d3.svg.axis().scale(x);
             var axis_x = d3.select("svg")
@@ -93,7 +93,7 @@ define([
             axis_x.remove();            
             
             x = d3.scale.ordinal()
-                .rangeRoundBands([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding]);
+                .rangeRoundBands([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding], 0, 0);
             x.domain(xDomain);
             x_axis = d3.svg.axis().scale(x);
             axis_x = d3.select("svg")
@@ -106,8 +106,8 @@ define([
             
             var plotWidth = width - yAxisWidth - leftPadding - rightPadding;
             
-            var barWidth = (plotWidth / d3.max(_dataCollate.length))/data.length;
-            var seriesWidth = plotWidth / d3.max(_dataCollate.length);
+            var barWidth = x.rangeBand()/data.length;
+            var seriesWidth = x.rangeBand();
             
             for(var i = 0 ; i < data.length ; i++){             
                 
@@ -118,7 +118,7 @@ define([
                     .append("g")
                     .attr("transform", function(d, idx) {
                         console.log(x(d.name));
-                        return "translate(" + ((yAxisWidth + leftPadding) + (x(d.name) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
+                        return "translate(" + ((yAxisWidth + leftPadding) + (x(d.name) + (barWidth * i) + (barWidth * (gap/100) * 0.5))) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
