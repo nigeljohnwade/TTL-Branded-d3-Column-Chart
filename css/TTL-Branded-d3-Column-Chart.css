@@ -26,3 +26,10 @@ svg text.caption-text{
     color: black;
     font-size: 12px;
 }
+.axis line, .axis path{
+    fill: none;
+    stroke: lightgrey;
+}
+.axis text{
+    fill: grey;
+}

@@ -1,5 +1,5 @@
 define( [
-    "css!./css/TTL-Branded-d3-Line-Chart.css",
+    "css!./css/TTL-Branded-d3-Column-Chart.css",
     "./libs/d3.min",
     "./libs/charts",
     "./properties",

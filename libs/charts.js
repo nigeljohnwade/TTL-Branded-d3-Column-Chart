@@ -18,8 +18,18 @@ define([
                 chartTitleHeight = 0,
                 captionTextHeight = 0,
                 topPadding = 20,
-                bottomPadding = 20;
+                bottomPadding = 20,
+                leftPadding = 0,
+                rightPadding = 20,
+                xAxisHeight = 0,
+                yAxisWidth = 0;
 
+            var _dataCollate = {max:[], length:[]};
+            $.each(data, function(idx, elem){
+                _dataCollate.max.push(d3.max(elem.map(function(elem2){ return elem2.value})));
+                _dataCollate.length.push(elem.length)
+            });
+            
             if(props.displayLegend){
                 legend.drawLegend(data, labels, colors, container, layout);
                 legendWidth = $('.legend', container).width();
@@ -58,21 +68,45 @@ define([
         
             var gap = props.multiSeriesGap;
             
-            var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding;
+            var x = d3.scale.linear()
+                .range([0, width - legendWidth - leftPadding - rightPadding]);
+            x.domain([0, d3.max(_dataCollate.length)]);
+            var x_axis = d3.svg.axis().scale(x);
+            var axis_x = d3.select("svg")
+                .append("g")
+                .attr("class", "x axis")
+                .call(x_axis);
+            xAxisHeight = axis_x[0][0].getBBox().height; 
+            
+            var plotHeight = height - chartTitleHeight - captionTextHeight - topPadding - bottomPadding - xAxisHeight;
             
             var y = d3.scale.linear()
                 .range([plotHeight, 0]);
-            
-            var _dataCollate = {max:[], length:[]};
-            $.each(data, function(idx, elem){
-                _dataCollate.max.push(d3.max(elem.map(function(elem2){ return elem2.value})));
-                _dataCollate.length.push(elem.length)
-            });
-            
             y.domain([0, d3.max(_dataCollate.max)]);
+            var y_axis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format("s"));
+            var axis_y = d3.select("svg")
+                .append("g")
+                .attr("class", "y axis")
+                .call(y_axis);
+            yAxisWidth = axis_y[0][0].getBBox().width; 
+            axis_x.remove();            
             
-            var barWidth = (width / d3.max(_dataCollate.length))/data.length;
-            var seriesWidth = width / d3.max(_dataCollate.length);
+            x = d3.scale.linear()
+                .range([0, width - legendWidth - yAxisWidth - leftPadding - rightPadding]);
+            x.domain([0, d3.max(_dataCollate.length)]);
+            x_axis = d3.svg.axis().scale(x);
+            axis_x = d3.select("svg")
+                .append("g")
+                .attr("class", "x axis")
+                .call(x_axis);
+                
+            axis_x.attr("transform", "translate(" + yAxisWidth + leftPadding + "," + (height - bottomPadding - xAxisHeight) + ")");
+            axis_y.attr("transform", "translate(" + yAxisWidth + leftPadding + ", "  + (chartTitleHeight + captionTextHeight + topPadding) + ")");
+            
+            var plotWidth = width - yAxisWidth - leftPadding - rightPadding;
+            
+            var barWidth = (plotWidth / d3.max(_dataCollate.length))/data.length;
+            var seriesWidth = plotWidth / d3.max(_dataCollate.length);
             
             for(var i = 0 ; i < data.length ; i++){             
                 
@@ -82,7 +116,7 @@ define([
                     .enter()
                     .append("g")
                     .attr("transform", function(d, idx) {
-                        return "translate(" + ((idx * seriesWidth) + (barWidth * ((100 - gap)/100) * i)) + ",0)"; 
+                        return "translate(" + ((yAxisWidth + leftPadding) + ((idx * seriesWidth) + (barWidth * ((100 - gap)/100) * i))) + ",0)"; 
                     });
                     
                 bar[i].append("rect")
@@ -114,6 +148,7 @@ define([
                     .text(function(d, idx){
                         return [d.name, ": ", d.value, " (", labels[i], ")"].join('');
                     });
+                
             }
             if(props.displayLegend && props.legendPosition === 'w'){
                 chart.style("transform", "translateX(" + legendWidth + "px)");
